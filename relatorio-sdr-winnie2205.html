@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Relatório SDR — Winnie | Ágatha Iara Co.</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f4f2;color:#1a1a1a;line-height:1.65;padding:40px 20px}
+.container{max-width:920px;margin:0 auto}
+.header{background:#1a1a1a;color:#f5f4f2;border-radius:16px;padding:40px 48px;margin-bottom:28px}
+.header .label{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#c9a96e;margin-bottom:12px}
+.header h1{font-size:26px;font-weight:700;margin-bottom:8px}
+.header .sub{font-size:13px;color:#888}
+.score-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px}
+.score-card{background:#fff;border-radius:12px;padding:22px 16px;text-align:center;border:1px solid #ebebeb}
+.score-card .num{font-size:34px;font-weight:800;color:#c9a96e;line-height:1;margin-bottom:6px}
+.score-card .desc{font-size:11px;color:#888;text-transform:uppercase;letter-spacing:1px}
+.alert{background:#fff6e5;border:1px solid #f0c060;border-radius:10px;padding:16px 20px;font-size:13px;color:#7a4f00;margin-bottom:24px}
+.alert strong{color:#5a3800}
+.section{background:#fff;border-radius:12px;padding:34px 38px;margin-bottom:22px;border:1px solid #ebebeb}
+.section-label{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#c9a96e;margin-bottom:18px}
+h2{font-size:19px;font-weight:700;margin-bottom:16px}
+h3{font-size:15px;font-weight:700;margin-bottom:10px}
+p{font-size:14px;margin-bottom:12px;color:#333}
+p:last-child{margin-bottom:0}
+.tag{display:inline-block;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase}
+.tag-ok{background:#e6f5ec;color:#2d7a4a}
+.tag-warn{background:#fff6e5;color:#b86a00}
+.tag-bad{background:#fdecea;color:#c0392b}
+.tag-neutral{background:#f0f0f0;color:#555}
+.case{border:1px solid #ebebeb;border-radius:10px;padding:24px;margin-bottom:14px}
+.case:last-child{margin-bottom:0}
+.case-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;gap:12px}
+.case-name{font-size:15px;font-weight:700}
+.case-ch{font-size:12px;color:#888;margin-top:2px}
+.quote{background:#f8f7f5;border-left:3px solid #c9a96e;padding:12px 16px;border-radius:0 8px 8px 0;font-size:13px;color:#555;margin:12px 0;font-style:italic}
+ul.list{list-style:none;margin-top:10px}
+ul.list li{padding:7px 0 7px 22px;position:relative;font-size:13px;border-bottom:1px solid #f0f0f0}
+ul.list li:last-child{border-bottom:none}
+ul.list li.g::before{content:"✓";position:absolute;left:0;color:#2d7a4a;font-weight:700}
+ul.list li.b::before{content:"✗";position:absolute;left:0;color:#c0392b;font-weight:700}
+ul.list li.t::before{content:"→";position:absolute;left:0;color:#c9a96e;font-weight:700}
+.timeline{position:relative;padding-left:26px}
+.timeline::before{content:'';position:absolute;left:7px;top:8px;bottom:8px;width:2px;background:#ebebeb}
+.titem{position:relative;margin-bottom:22px}
+.titem::before{content:'';position:absolute;left:-23px;top:5px;width:10px;height:10px;border-radius:50%;background:#c9a96e;border:2px solid #fff;box-shadow:0 0 0 2px #c9a96e}
+.tdate{font-size:11px;color:#888;margin-bottom:3px;text-transform:uppercase;letter-spacing:1px}
+.ttitle{font-size:14px;font-weight:700;margin-bottom:4px}
+.tbody{font-size:13px;color:#555}
+.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.pbox{border-radius:10px;padding:18px}
+.pbox.green{background:#e6f5ec}
+.pbox.red{background:#fdecea}
+.pbox h3{font-size:12px;font-weight:700;margin-bottom:10px;text-transform:uppercase;letter-spacing:1px}
+.pbox.green h3{color:#2d7a4a}
+.pbox.red h3{color:#c0392b}
+.pbox ul{list-style:none}
+.pbox ul li{font-size:12px;padding:5px 0;border-bottom:1px solid rgba(0,0,0,.07)}
+.pbox ul li:last-child{border-bottom:none}
+.mrow{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.mlabel{font-size:13px;width:185px;flex-shrink:0}
+.mbar{flex:1;height:8px;background:#f0f0f0;border-radius:4px;overflow:hidden}
+.mfill{height:100%;border-radius:4px;background:linear-gradient(90deg,#c9a96e,#e8c68a)}
+.mval{font-size:12px;color:#888;width:36px;text-align:right;flex-shrink:0}
+.script{background:#1a1a1a;color:#f0f0f0;border-radius:10px;padding:22px;margin-bottom:14px}
+.script .slabel{font-size:10px;text-transform:uppercase;letter-spacing:2px;color:#c9a96e;margin-bottom:10px}
+.script p{font-size:13px;color:#ccc;margin-bottom:8px}
+.script p:last-child{margin-bottom:0}
+.divider{border:none;border-top:1px solid #f0f0f0;margin:20px 0}
+.footer{text-align:center;font-size:12px;color:#aaa;margin-top:36px;padding-top:20px;border-top:1px solid #ebebeb}
+@media(max-width:640px){.score-grid{grid-template-columns:1fr 1fr}.pgrid{grid-template-columns:1fr}.header{padding:28px 22px}.section{padding:24px 18px}}
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+  <div class="label">Ágatha Iara Co. &nbsp;·&nbsp; Funil SDR &nbsp;·&nbsp; Análise interna</div>
+  <h1>Relatório de Performance — Winnie</h1>
+  <div class="sub">Semanas 1 e 2 &nbsp;·&nbsp; Ligações e abordagens WhatsApp &nbsp;·&nbsp; Maio 2026</div>
+</div>
+
+<div class="score-grid">
+  <div class="score-card"><div class="num">6</div><div class="desc">Casos analisados</div></div>
+  <div class="score-card"><div class="num">0</div><div class="desc">Reuniões agendadas</div></div>
+  <div class="score-card"><div class="num">1</div><div class="desc">Lead quente ativo</div></div>
+  <div class="score-card"><div class="num">2ª</div><div class="desc">Semana de operação</div></div>
+</div>
+
+
+<!-- EVOLUÇÃO -->
+<div class="section">
+  <div class="section-label">Evolução geral</div>
+  <h2>Linha do tempo — do início até aqui</h2>
+  <div class="timeline">
+    <div class="titem">
+      <div class="tdate">Semana 1 — início</div>
+      <div class="ttitle">Fase de familiarização: muita formalidade, pouca personalização</div>
+      <div class="tbody">Abordagens genéricas. Apresentava o produto logo no primeiro contato. Saía do script rápido quando encontrava qualquer resistência. Não explorava gatekeepers (secretárias). Ligações não gravadas.</div>
+    </div>
+    <div class="titem">
+      <div class="tdate">Semana 1 — meados</div>
+      <div class="ttitle">Primeiros ajustes: curiosidade começa a aparecer</div>
+      <div class="tbody">Começou a usar perguntas de curiosidade no primeiro contato. Ainda capitulava rápido diante de "tudo bem por aqui". Pediu ajuda pra Ágatha no caso Elisângela antes de responder a uma objeção difícil — sinal de autoconsciência e maturidade.</div>
+    </div>
+    <div class="titem">
+      <div class="tdate">Semana 2 — atual</div>
+      <div class="ttitle">Evolução visível, mas inconsistente entre contatos</div>
+      <div class="tbody">Hooks de curiosidade fortes (Smile, Flávia). Produziu o melhor follow-up até agora (Elisângela). Porém ainda usa mensagens idênticas para leads diferentes (Dra. Alexia e Instituto Mineiro receberam o mesmo texto). O padrão oscila dependendo do canal e da situação.</div>
+    </div>
+  </div>
+</div>
+
+<!-- MÉTRICAS -->
+<div class="section">
+  <div class="section-label">Métricas qualitativas</div>
+  <h2>Onde está cada competência hoje</h2>
+  <div class="mrow"><div class="mlabel">Hook de curiosidade</div><div class="mbar"><div class="mfill" style="width:75%"></div></div><div class="mval">75%</div></div>
+  <div class="mrow"><div class="mlabel">Personalização por lead</div><div class="mbar"><div class="mfill" style="width:40%"></div></div><div class="mval">40%</div></div>
+  <div class="mrow"><div class="mlabel">Qualificação (perguntas)</div><div class="mbar"><div class="mfill" style="width:50%"></div></div><div class="mval">50%</div></div>
+  <div class="mrow"><div class="mlabel">Resistência a objeções</div><div class="mbar"><div class="mfill" style="width:35%"></div></div><div class="mval">35%</div></div>
+  <div class="mrow"><div class="mlabel">Follow-up e CTA</div><div class="mbar"><div class="mfill" style="width:65%"></div></div><div class="mval">65%</div></div>
+  <div class="mrow"><div class="mlabel">Registro e documentação</div><div class="mbar"><div class="mfill" style="width:30%"></div></div><div class="mval">30%</div></div>
+  <div class="mrow"><div class="mlabel">Consistência entre contatos</div><div class="mbar"><div class="mfill" style="width:30%"></div></div><div class="mval">30%</div></div>
+</div>
+
+<!-- ANÁLISE POR CASO -->
+<div class="section">
+  <div class="section-label">Análise caso a caso</div>
+  <h2>O que aconteceu em cada contato</h2>
+
+  <!-- Caso 1 -->
+  <div class="case">
+    <div class="case-head">
+      <div>
+        <div class="case-name">Ligação 1 — Clínica com suporte de gestão já contratado</div>
+        <div class="case-ch">Canal: ligação telefônica &nbsp;·&nbsp; Interlocutora: secretária</div>
+      </div>
+      <span class="tag tag-warn">Oportunidade perdida</span>
+    </div>
+    <div class="quote">"A gente já acompanhado de pé, todo dia, uma vez por semana, os doutores têm reunião com esse representante da empresa de gestão... Eu vou até te adiantar que no momento eles não vão ter interesse."</div>
+    <ul class="list">
+      <li class="g">Encerrou a ligação com educação e sem pressão desnecessária</li>
+      <li class="b">Aceitou a negativa da secretária sem nenhuma pergunta de sondagem</li>
+      <li class="b">A secretária afirmou o que ela acha, não o que os médicos/donos sentem — Winnie não fez essa distinção</li>
+      <li class="b">Não perguntou o que esse suporte cobre exatamente, o que abriria espaço para mostrar onde há gap</li>
+      <li class="t">Script sugerido: "Que ótimo que vocês já têm esse suporte! Ele cuida de qual parte especificamente — atendimento, processos internos, os dois? Pergunto porque às vezes a gente atua em áreas complementares."</li>
+    </ul>
+  </div>
+
+  <!-- Caso 2 -->
+  <div class="case">
+    <div class="case-head">
+      <div>
+        <div class="case-name">Elisângela — Clínica com ferramentas já rodando</div>
+        <div class="case-ch">Canal: ligação + follow-up WhatsApp</div>
+      </div>
+      <span class="tag tag-ok">Melhor caso da semana</span>
+    </div>
+    <div class="quote">"Ferramenta sem processo vira só mais uma mensalidade cara e um sistema que o time não usa direito."</div>
+    <ul class="list">
+      <li class="g">Percebeu que precisava de apoio antes de responder e acionou a Ágatha — maturidade real</li>
+      <li class="g">O texto do follow-up no WhatsApp foi o melhor da Winnie até hoje: reframe da objeção, lista de resultados claros, CTA com dois horários concretos</li>
+      <li class="g">Usou a linguagem da própria cliente para virar a objeção a favor ("você já deu o primeiro passo na tecnologia")</li>
+      <li class="g">Não insistiu por telefone quando Elisângela hesitou — soube migrar de canal no momento certo</li>
+      <li class="b">Não gravou a ligação — o problema de esquecer o play está se repetindo</li>
+      <li class="b">A mensagem foi enviada para o número com bot de atendimento automático, não para o contato pessoal da Elisângela</li>
+      <li class="t">Esse follow-up precisa virar script fixo de objeção "já tenho ferramentas" — é o texto mais forte que ela produziu</li>
+    </ul>
+  </div>
+
+  <!-- Caso 3 -->
+  <div class="case">
+    <div class="case-head">
+      <div>
+        <div class="case-name">Smile Clínica Odontológica — Dentista Funcionários</div>
+        <div class="case-ch">Canal: WhatsApp &nbsp;·&nbsp; Interlocutora: Ana Vitória (CRM bot)</div>
+      </div>
+      <span class="tag tag-ok">Hook forte, mas quebrou o ritmo depois</span>
+    </div>
+    <div class="quote">"Vi a Smile Clínica no Google e fiquei curiosa: quando alguém da equipe precisa se ausentar alguns dias, o atendimento de vocês consegue rodar no mesmo ritmo ou trava em algum ponto?"</div>
+    <ul class="list">
+      <li class="g">Abertura com curiosidade específica — exatamente o modelo certo</li>
+      <li class="g">Personalizou mencionando onde encontrou a clínica ("Vi no Google")</li>
+      <li class="g">A pergunta inicial não menciona produto, só desperta uma dor real no dono</li>
+      <li class="b">Depois da resposta da Ana, a pergunta seguinte foi genérica: "como é o processo de atendimento aí de vocês?" — não conecta com o hook que ela mesma abriu</li>
+      <li class="b">Parece que são duas conversas diferentes sem fio condutor</li>
+      <li class="t">Depois que o lead responde ao hook, continuar no mesmo fio: "É exatamente isso que eu queria entender melhor — quando isso trava, como vocês costumam resolver? Tem alguém específico que fica responsável ou todo mundo acaba resolvendo?"</li>
+    </ul>
+  </div>
+
+  <!-- Caso 4 -->
+  <div class="case">
+    <div class="case-head">
+      <div>
+        <div class="case-name">Dra. Alexia — NOS (contato via Raine)</div>
+        <div class="case-ch">Canal: WhatsApp &nbsp;·&nbsp; Sem resposta registrada</div>
+      </div>
+      <span class="tag tag-warn">Pitch antes da relação</span>
+    </div>
+    <div class="quote">"Sou a Winnie e junto com a Agatha nossa especialista em processos e atendimento, ajudamos clínicas a saírem do caos operacional e dos gargalos do atendimento e todos os processos internos. Para entender se faz sentido conversarmos mais a fundo gostaria de entender um pouco mais da sua clínica. Hoje tem algo específico que está te incomodando ou travando a sua operação no dia a dia?"</div>
+    <ul class="list">
+      <li class="g">Usou a referência da Raine como âncora social — boa prática</li>
+      <li class="g">Terminou com uma pergunta aberta de qualificação, que é o objetivo</li>
+      <li class="b">O segundo parágrafo é um pitch completo antes de estabelecer qualquer rapport</li>
+      <li class="b">"Ajudamos clínicas a saírem do caos operacional e dos gargalos do atendimento e todos os processos internos" — longo, genérico, parece mensagem em massa</li>
+      <li class="b">A frase final de qualificação perde força porque vem depois de um pitch — a Dra. Alexia já está com o pé atrás</li>
+      <li class="t">Com referência pessoal (Raine), a abordagem pode ser muito mais direta e quente: "Olá Dra. Alexia! A Raine me passou seu contato e falou bem de você. Tenho uma curiosidade: quando você precisa se ausentar, o consultório consegue segurar o ritmo ou trava em algum ponto?"</li>
+    </ul>
+  </div>
+
+  <!-- Caso 5 -->
+  <div class="case">
+    <div class="case-head">
+      <div>
+        <div class="case-name">Instituto Mineiro de Dermatologia</div>
+        <div class="case-ch">Canal: WhatsApp &nbsp;·&nbsp; Respondido por bot</div>
+      </div>
+      <span class="tag tag-bad">Mensagem idêntica à anterior, sem personalização</span>
+    </div>
+    <div class="quote">"Boa tarde Doutores, tudo bem? Meu nome é Winnie sou do time da Agatha ela é nossa especialista em processos e atendimento..."</div>
+    <ul class="list">
+      <li class="b">Texto quase idêntico ao enviado para Dra. Alexia — problema de escala sem personalização</li>
+      <li class="b">"Boa tarde Doutores" (plural) indica que não há um decisor identificado, o que fragiliza a abordagem</li>
+      <li class="b">Instituto de Dermatologia tem dinâmica diferente de uma clínica geral — a mensagem não reflete nenhuma pesquisa sobre o negócio</li>
+      <li class="b">Resposta foi um bot automático — sem sinal de que chegou a um humano</li>
+      <li class="t">Para clínicas grandes/institutos: identificar antes quem é o responsável administrativo ou sócio-diretor. Mensagem deve citar especificidade da dermatologia (agenda, convênios, procedimentos estéticos x clínicos)</li>
+    </ul>
+  </div>
+
+  <!-- Caso 6 -->
+  <div class="case">
+    <div class="case-head">
+      <div>
+        <div class="case-name">Flávia Pretas — Clínica (encontrada no Instagram)</div>
+        <div class="case-ch">Canal: WhatsApp &nbsp;·&nbsp; Sem resposta registrada</div>
+      </div>
+      <span class="tag tag-ok">Boa adaptação do hook para Instagram</span>
+    </div>
+    <div class="quote">"Eiii Flávia, boa tarde! Tudo bem? Vi sua clínica no Instagram e fiquei curiosa: quando você precisa se ausentar alguns dias, o atendimento de vocês consegue rodar no mesmo ritmo ou trava em algum ponto?"</div>
+    <ul class="list">
+      <li class="g">Tom mais leve e pessoal, adequado para contato via Instagram</li>
+      <li class="g">Especificou onde encontrou a clínica ("Vi no Instagram") — sinal de que não é spam</li>
+      <li class="g">Dirigiu-se diretamente à Flávia pelo nome — boa personalização</li>
+      <li class="g">Mesma estrutura de hook que funcionou no Smile, aplicada corretamente aqui</li>
+      <li class="t">Se não responder em 24h: follow-up com urgência leve — "Flávia, vi que você não viu ainda (ou viu e ficou ocupada!). Fica guardado aqui pra quando der."</li>
+    </ul>
+  </div>
+</div>
+
+<!-- PADRÕES -->
+<div class="section">
+  <div class="section-label">Padrões identificados</div>
+  <h2>O que se repete — pra bem e pra mal</h2>
+  <div class="pgrid">
+    <div class="pbox green">
+      <h3>O que está funcionando</h3>
+      <ul>
+        <li>Hook de curiosidade sem citar produto</li>
+        <li>Personalizar de onde veio o contato (Google, Instagram, referência)</li>
+        <li>Pedir ajuda antes de responder objeção difícil</li>
+        <li>Follow-up com reframe de objeção (Elisângela)</li>
+        <li>CTA com dois horários concretos</li>
+        <li>Tom mais leve em contatos diretos com donos</li>
+      </ul>
+    </div>
+    <div class="pbox red">
+      <h3>O que está travando</h3>
+      <ul>
+        <li>Capitular na primeira objeção sem sondar</li>
+        <li>Copiar a mesma mensagem para leads diferentes</li>
+        <li>Pitch antes de estabelecer rapport</li>
+        <li>Perder o fio condutor depois que o lead responde</li>
+        <li>Não gravar ligações (problema recorrente)</li>
+        <li>Enviar mensagem para bot em vez de contato pessoal</li>
+        <li>Não identificar o decisor antes de abordar instituto/clínica grande</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- SCRIPTS -->
+<div class="section">
+  <div class="section-label">Scripts recomendados</div>
+  <h2>Respostas prontas para as situações mais comuns</h2>
+
+  <div class="script">
+    <div class="slabel">Objeção: "Já temos suporte de gestão"</div>
+    <p>Que ótimo que vocês já têm esse suporte! Esse suporte cuida de qual parte especificamente, processo interno, atendimento, os dois? Pergunto porque às vezes a gente atua em áreas complementares — e quando não tem encaixe, a gente mesmo fala isso.</p>
+  </div>
+
+  <div class="script">
+    <div class="slabel">Objeção: "Já tenho várias ferramentas rodando"</div>
+    <p>Que bom que você já entendeu que o futuro do negócio passa pela tecnologia. O detalhe que a gente vê acontecer na maioria das empresas é que ferramenta sem processo vira mensalidade cara e sistema que o time não usa direito. O que a Ágatha faz não é vender mais um sistema — é fazer as ferramentas que você já tem conversarem entre si para que seu atendimento não perca venda e seu time pare de depender de você para decisão simples. Vale 15 minutos com ela pra você ver se tem dinheiro escorrendo pelo ralo ou não?</p>
+  </div>
+
+  <div class="script">
+    <div class="slabel">Objeção: "Não é o momento agora"</div>
+    <p>Faz todo sentido. Só me conta: quando costuma ser o momento de você parar pra pensar na operação da sua empresa? Pergunto porque a agenda da Ágatha tá bem corrida e eu quero conseguir te reservar um horário que faça sentido pra você.</p>
+  </div>
+
+  <div class="script">
+    <div class="slabel">Manter o fio depois que o lead responde ao hook</div>
+    <p>É exatamente isso que eu queria entender melhor. Quando trava, como vocês costumam resolver? Tem alguém específico que fica responsável por isso ou vai parar no dono mesmo?</p>
+  </div>
+
+  <div class="script">
+    <div class="slabel">Abordagem com referência pessoal (ex: Raine me passou)</div>
+    <p>Olá [nome]! A [referência] me passou seu contato e falou bem de você. Tenho uma curiosidade rápida: quando você precisa se ausentar alguns dias, o consultório/a empresa consegue segurar o ritmo ou trava em algum ponto?</p>
+  </div>
+
+  <div class="script">
+    <div class="slabel">Follow-up quando lead não respondeu em 24-48h</div>
+    <p>[Nome], fica guardado aqui pra quando der! Só reforçando: não é pra te vender nada agora, só queria entender como tá o dia a dia de vocês. Se preferir um horário específico pra conversar, me fala que encaixo na agenda da Ágatha.</p>
+  </div>
+</div>
+
+<!-- PRÓXIMOS PASSOS -->
+<div class="section">
+  <div class="section-label">Próximos passos</div>
+  <h2>O que priorizar esta semana</h2>
+
+  <h3 style="margin-bottom:10px;color:#c9a96e">Para a Winnie</h3>
+  <ul class="list" style="margin-bottom:20px">
+    <li class="t">Padronizar o hook de curiosidade como abertura padrão em todos os canais (não usar mais o pitch de apresentação no primeiro contato)</li>
+    <li class="t">Antes de abordar instituto ou clínica grande: identificar o decisor pelo nome antes de mandar qualquer mensagem</li>
+    <li class="t">Ativar gravação de voz antes de discar — criar rotina antes de toda ligação</li>
+    <li class="t">Verificar se o número de contato é pessoal ou bot antes de enviar follow-up</li>
+    <li class="t">Montar um arquivo de texto com os scripts acima para consultar durante ligações</li>
+    <li class="t">Registrar no ClickUp, logo após cada contato, o que a pessoa disse e o que ela sentiu da conversa</li>
+  </ul>
+
+  <h3 style="margin-bottom:10px;color:#c9a96e">Para a Ágatha</h3>
+  <ul class="list">
+    <li class="t">Revisitar o lead do Elisângela — mensagem excelente foi enviada para bot, precisa chegar ao contato pessoal</li>
+    <li class="t">Avaliar os e-mails dos 2 leads que pediram por e-mail (pendente do ClickUp)</li>
+    <li class="t">Criar uma versão curta do script de objeção "já tenho ferramentas" para a Winnie usar nas ligações (ela já usa bem no WhatsApp, mas perde no telefone)</li>
+    <li class="t">Adicionar campo "número pessoal confirmado" no lead do ClickUp antes de passar pra Winnie abordar</li>
+    <li class="t">Reunião de sexta: trazer as conversas que ficaram sem resposta e montar estratégia de follow-up para cada uma</li>
+  </ul>
+</div>
+
+<!-- =====================================================
+     ANÁLISE DO FUNIL SDR — CLICKUP
+     ===================================================== -->
+
+<div class="section" style="border-top:3px solid #c9a96e;margin-top:32px">
+  <div class="section-label">Análise do Funil SDR &nbsp;·&nbsp; ClickUp &nbsp;·&nbsp; 22/05/2026</div>
+  <h2>Visão completa do funil — o que está registrado e o que falta</h2>
+  <p style="color:#888;font-size:13px">Fonte: lista SDR consultada diretamente via API do ClickUp. Total de 48 leads ativos (excluindo tarefa modelo). Todos os comentários da Winnie foram lidos e avaliados.</p>
+</div>
+
+<!-- CARDS DO FUNIL -->
+<div class="score-grid" style="grid-template-columns:repeat(5,1fr)">
+  <div class="score-card"><div class="num" style="font-size:26px">5</div><div class="desc">Prospecção</div></div>
+  <div class="score-card"><div class="num" style="font-size:26px">26</div><div class="desc">Primeiro contato</div></div>
+  <div class="score-card"><div class="num" style="font-size:26px">7</div><div class="desc">Lead frio</div></div>
+  <div class="score-card"><div class="num" style="font-size:26px;color:#2d7a4a">1</div><div class="desc">Qualificação</div></div>
+  <div class="score-card"><div class="num" style="font-size:26px;color:#c0392b">9</div><div class="desc">Perdido</div></div>
+</div>
+
+<!-- VISÃO GERAL POR ETAPA -->
+<div class="section">
+  <div class="section-label">Distribuição por etapa</div>
+  <h2>Onde cada lead está agora</h2>
+
+  <h3 style="margin-bottom:10px;color:#888;font-size:12px;text-transform:uppercase;letter-spacing:1px">Qualificação</h3>
+  <div class="case" style="border-color:#2d7a4a33;background:#f6fdf9;margin-bottom:20px">
+    <div class="case-head">
+      <div>
+        <div class="case-name">Dra. Cláudia Gramiscelli &nbsp;·&nbsp; Odontologia</div>
+        <div class="case-ch">Único lead que chegou a qualificação</div>
+      </div>
+      <span class="tag tag-ok">Qualificação</span>
+    </div>
+    <div class="quote">"Dra Claudia vai estar em viagem do dia 16 ao 23. Entrar em contato dia 24 e tentar marcar a reunião."</div>
+    <ul class="list">
+      <li class="g">Única tarefa com next step explícito e data definida</li>
+      <li class="g">Winnie registrou o motivo do adiamento e o que fazer a seguir</li>
+      <li class="b">Não há registro do que foi conversado nem do que gerou o interesse da Dra. para chegar à qualificação</li>
+      <li class="b">Não há confirmação de que o contato foi feito no dia 24</li>
+    </ul>
+  </div>
+
+  <h3 style="margin-bottom:10px;color:#888;font-size:12px;text-transform:uppercase;letter-spacing:1px">Prospecção &nbsp;·&nbsp; 5 leads sem nenhum comentário</h3>
+  <div style="background:#fff6e5;border:1px solid #f0c060;border-radius:10px;padding:16px 20px;margin-bottom:20px;font-size:13px;color:#7a4f00">
+    <strong>Atenção:</strong> Bravi Distribuidora, Atend Med BH, Grupo ArteBrilho, Village Serviços e Redecardio estão na etapa "Prospecção" sem nenhum comentário. Não é possível saber se já houve algum contato tentado, qual canal foi usado ou qual é o próximo passo para cada um.
+  </div>
+
+  <h3 style="margin-bottom:10px;color:#888;font-size:12px;text-transform:uppercase;letter-spacing:1px">Perdido &nbsp;·&nbsp; 9 leads</h3>
+  <div class="case" style="margin-bottom:8px">
+    <div class="case-head">
+      <div><div class="case-name">OdontoLógica BH e Ativa Odontologia</div></div>
+      <span class="tag tag-bad">Sem registro</span>
+    </div>
+    <ul class="list">
+      <li class="b">Status "perdido" sem nenhum comentário. Não há como saber por que foram encerrados, quem foi contatado ou o que aconteceu</li>
+      <li class="t">Para qualquer lead marcado como perdido, o comentário mínimo deve explicar: quem respondeu, o que foi dito e por que foi encerrado</li>
+    </ul>
+  </div>
+  <div class="case" style="margin-bottom:8px">
+    <div class="case-head">
+      <div><div class="case-name">Odontoart Clínica Odontológica</div></div>
+      <span class="tag tag-ok">Melhor registro entre os perdidos</span>
+    </div>
+    <div class="quote">"Alice: retornar 19/05 às 13h." → "Não estavam na clínica, consegui um e-mail." → "Conversei com a Dra. Mariana. Processo é manual, sócio cuida e para ela está bom assim. Enviei e-mail deixando as portas abertas."</div>
+    <ul class="list">
+      <li class="g">Linha do tempo clara: primeiro contato, retorno agendado, novo contato, resultado final</li>
+      <li class="g">Registrou quem é o decisor (Mariana), qual é a objeção real ("processo manual, sócio cuida") e o encerramento</li>
+      <li class="g">Esse é o padrão que todos os perdidos deveriam ter</li>
+    </ul>
+  </div>
+  <div class="case" style="margin-bottom:8px">
+    <div class="case-head">
+      <div><div class="case-name">Odonto Centro Sul BH</div></div>
+      <span class="tag tag-warn">Status provavelmente errado</span>
+    </div>
+    <div class="quote">"Mensagem no WhatsApp somente com um vezinho."</div>
+    <ul class="list">
+      <li class="b">Status "perdido", mas o único registro é que a mensagem foi enviada e visualizada. Lead não respondeu, isso não é "perdido" — é falta de resposta</li>
+      <li class="t">Mover para "lead frio" e registrar tentativa de follow-up</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ANÁLISE DOS COMENTÁRIOS -->
+<div class="section">
+  <div class="section-label">Avaliação dos comentários</div>
+  <h2>O que está sendo registrado bem e o que falta</h2>
+
+  <div class="pgrid" style="margin-bottom:24px">
+    <div class="pbox green">
+      <h3>O que está correto nos registros</h3>
+      <ul>
+        <li>Data de cada tentativa de contato (13/05, 15/05, 18/05)</li>
+        <li>Canal usado em cada ação (wpp, ligação, e-mail, instagram)</li>
+        <li>Nome de quem atendeu (Alice, Ester, Sara, Emile, Tauane)</li>
+        <li>E-mails e contatos coletados ficam registrados na tarefa</li>
+        <li>Obstáculos operacionais anotados (bot, ligação não completa, sem whatsapp)</li>
+        <li>Alguns casos trazem insight de pesquisa prévia (Éclat: reclamações online; Meire Chaves: entrou no grupo wpp para conseguir número)</li>
+        <li>Dra. Cláudia: único next step com data explícita registrado corretamente</li>
+      </ul>
+    </div>
+    <div class="pbox red">
+      <h3>O que está faltando sistematicamente</h3>
+      <ul>
+        <li>Conteúdo da mensagem enviada — "mensagem enviada" sem registrar qual mensagem</li>
+        <li>Qualidade da conversa — o que exatamente foi dito ao decisor</li>
+        <li>Próximo passo definido com data em quase todos os leads</li>
+        <li>Motivo claro de encerramento nos perdidos</li>
+        <li>Reação e tom do lead — nível de interesse, abertura ou resistência</li>
+        <li>Tentativa de superar objeção — o que foi feito antes de aceitar o "não"</li>
+        <li>5 leads em "prospecção" sem nenhum registro de ação</li>
+        <li>2 perdidos (OdontoLógica e Ativa) sem nenhum comentário</li>
+      </ul>
+    </div>
+  </div>
+
+  <hr class="divider"/>
+  <h3 style="margin-bottom:14px">Casos que precisam de atenção imediata</h3>
+
+  <div class="case" style="margin-bottom:10px">
+    <div class="case-head">
+      <div><div class="case-name">Talks English &nbsp;·&nbsp; Lead Frio</div></div>
+      <span class="tag tag-bad">Comentário com erro que inverte o sentido</span>
+    </div>
+    <div class="quote">"Informou no momento tem interesse, aguardando o retorno do porque não tem interesse."</div>
+    <ul class="list">
+      <li class="b">A frase tem uma negação omitida que inverte o sentido: "tem interesse" e "não tem interesse" na mesma linha. O status "lead frio" indica que a intenção era registrar que o lead NÃO tem interesse, mas a frase ficou ambígua</li>
+      <li class="t">Corrigir o comentário para deixar claro o que aconteceu. Erro pequeno que muda completamente o entendimento do lead</li>
+    </ul>
+  </div>
+
+  <div class="case" style="margin-bottom:10px">
+    <div class="case-head">
+      <div><div class="case-name">NU.V.E.M MEDICINA &nbsp;·&nbsp; Primeiro Contato</div></div>
+      <span class="tag tag-ok">Registro mais completo da semana 2</span>
+    </div>
+    <div class="quote">"Consegui falar com a Elizangela. Disse que já possui alguns serviços. Perguntei quais, ela não soube especificar. Informei que trabalhamos com atendimento e processos. Perguntei o que ainda a incomoda. Ela pediu para enviar pelo wpp. Enviado. Aguardando retorno."</div>
+    <ul class="list">
+      <li class="g">Fluxo da conversa bem documentado: conseguiu falar, explorou objeção, fez pergunta de qualificação, mudou de canal no momento certo</li>
+      <li class="g">Registrou que tentou aprofundar ("perguntei quais") — demonstra sondagem real</li>
+      <li class="b">Não há next step: quando vai fazer follow-up no wpp se ela não responder?</li>
+    </ul>
+  </div>
+
+  <div class="case" style="margin-bottom:10px">
+    <div class="case-head">
+      <div><div class="case-name">Spa Renovo &nbsp;·&nbsp; Primeiro Contato</div></div>
+      <span class="tag tag-ok">Único lead com observação de perfil</span>
+    </div>
+    <div class="quote">"Cliente informou que no momento está um pouco apertada financeiramente, mas deixou nosso contato salvo. Obs.: Lead super simpática."</div>
+    <ul class="list">
+      <li class="g">Registrou a objeção real (financeiro), não só o "não tem interesse"</li>
+      <li class="g">Anotou a percepção de receptividade da lead — informação valiosa para o follow-up</li>
+      <li class="g">É o único lead com uma nota de perfil e tom registrada — deveria ser padrão em todos</li>
+      <li class="b">Ainda sem next step com data</li>
+    </ul>
+  </div>
+
+  <div class="case" style="margin-bottom:10px">
+    <div class="case-head">
+      <div><div class="case-name">Risus Odontologia &nbsp;·&nbsp; Perdido</div></div>
+      <span class="tag tag-warn">Tentou superar a objeção, mas capitulou na secretária</span>
+    </div>
+    <div class="quote">"Conversei com a Tauane. Informou que já têm o serviço (marketing). Informei que nosso trabalho é diferente, que podemos facilitar o atendimento ao cliente e nos processos internos. Mesmo assim ela falou que não tem interesse."</div>
+    <ul class="list">
+      <li class="g">Registrou a objeção ("já têm o serviço"), sondou a área (marketing) e tentou diferenciar</li>
+      <li class="b">A diferenciação foi genérica ("nosso trabalho é diferente") sem explorar onde há gap real no atendimento</li>
+      <li class="b">Aceitou a recusa da Tauane (que não é o decisor) sem tentar chegar ao proprietário ou gestor clínico</li>
+    </ul>
+  </div>
+
+  <div class="case" style="margin-bottom:10px">
+    <div class="case-head">
+      <div><div class="case-name">HC School BH &nbsp;·&nbsp; Primeiro Contato</div></div>
+      <span class="tag tag-bad">Proposta pedida antes de qualificação</span>
+    </div>
+    <div class="quote">"Consegui contato pelo telefone fixo, falei com Rafaela e a mesma pediu para encaminhar a proposta por e-mail."</div>
+    <ul class="list">
+      <li class="b">"Encaminhar proposta" para um lead ainda em primeiro contato é sinal de alerta: provavelmente o lead pediu proposta para encerrar a conversa, sem entender o que é consultoria</li>
+      <li class="b">Não há registro do que foi dito nessa ligação, o que impede avaliar o que gerou esse pedido</li>
+      <li class="t">Antes de enviar qualquer coisa, Winnie deve ligar de volta para qualificar. Proposta sem diagnóstico vai ser ignorada</li>
+    </ul>
+  </div>
+</div>
+
+<!-- PADRÕES DE REGISTRO -->
+<div class="section">
+  <div class="section-label">Padrões identificados nos registros</div>
+  <h2>O que se repete nos comentários do ClickUp</h2>
+
+  <h3 style="margin-bottom:8px;font-size:13px;color:#c9a96e">Padrão 1 &nbsp;·&nbsp; "Mensagem enviada" sem conteúdo</h3>
+  <p>A maioria dos leads em "primeiro contato" tem o mesmo comentário: "contato via wpp dia 13/05 + tentativa de telefone 18/05 + nova mensagem". Esse padrão se repete em pelo menos 18 tarefas. O registro documenta quando foi feito, mas não o que foi enviado. Isso impede qualquer análise de qual abordagem gera mais resposta.</p>
+
+  <h3 style="margin-bottom:8px;margin-top:18px;font-size:13px;color:#c9a96e">Padrão 2 &nbsp;·&nbsp; "Deixei à disposição" como encerramento passivo</h3>
+  <p>Em praticamente todos os perdidos, Winnie encerra com "deixei o telefone à disposição" ou "deixei nosso site". Esse registro sinaliza que não houve follow-up estruturado após a objeção — a conversa terminou sem uma tentativa clara de reverter ou reagendar.</p>
+
+  <h3 style="margin-bottom:8px;margin-top:18px;font-size:13px;color:#c9a96e">Padrão 3 &nbsp;·&nbsp; Ausência de next step com data</h3>
+  <p>Em 47 das 48 tarefas, não há um próximo passo com data registrado. A única exceção é Dra. Cláudia Gramiscelli ("entrar em contato dia 24"). Sem next step, o funil depende da memória da Winnie para saber o que fazer com cada lead.</p>
+
+  <h3 style="margin-bottom:8px;margin-top:18px;font-size:13px;color:#c9a96e">Padrão 4 &nbsp;·&nbsp; Obstáculos operacionais bem registrados</h3>
+  <p>Onde Winnie se sai bem: quando há um obstáculo técnico (ligação não completa, sem WhatsApp, bot automático, site fora do ar), ela documenta. Isso é útil para a Ágatha saber quais leads precisam de pesquisa adicional antes do próximo contato.</p>
+</div>
+
+<!-- RECOMENDAÇÕES -->
+<div class="section">
+  <div class="section-label">Recomendações</div>
+  <h2>Como melhorar o padrão de registro no ClickUp</h2>
+
+  <div class="script">
+    <div class="slabel">Estrutura de comentário após cada contato realizado</div>
+    <p><strong style="color:#c9a96e">Data e canal:</strong> Ex: "18/05 — ligação"</p>
+    <p><strong style="color:#c9a96e">Com quem falei:</strong> Ex: "Falei com Juliana (secretária)"</p>
+    <p><strong style="color:#c9a96e">O que foi dito:</strong> Ex: "Usei o hook de ausência. Ela disse que a doutora está sempre presente e não vê necessidade."</p>
+    <p><strong style="color:#c9a96e">Tom e nível de interesse:</strong> Ex: "Lead simpática mas resistente. Não rejeitou, só adiou."</p>
+    <p><strong style="color:#c9a96e">Próximo passo:</strong> Ex: "Retornar em 25/05 com follow-up de curiosidade."</p>
+  </div>
+
+  <div class="script" style="margin-top:12px">
+    <div class="slabel">Estrutura de comentário ao marcar como perdido</div>
+    <p><strong style="color:#c9a96e">Quem encerrou:</strong> "A Leticia (gestora) encerrou a conversa."</p>
+    <p><strong style="color:#c9a96e">Motivo real:</strong> "Disse que não têm budget no momento e que a diretoria não aprova novas contratações até junho."</p>
+    <p><strong style="color:#c9a96e">Foi tentado superar?</strong> "Tentei reagendar para junho. Ela não confirmou."</p>
+    <p><strong style="color:#c9a96e">Encerramento:</strong> "Enviei e-mail de fechamento com porta aberta para junho."</p>
+  </div>
+
+  <ul class="list" style="margin-top:20px">
+    <li class="t">Criar campo customizado "Próximo passo + data" no ClickUp para preenchimento obrigatório após todo contato realizado</li>
+    <li class="t">Adicionar campo "Motivo de encerramento" nos perdidos: sem interesse, sem budget, já tem solução, momento errado</li>
+    <li class="t">Mover Odonto Centro Sul BH de "perdido" para "lead frio" — o lead só não respondeu, não recusou</li>
+    <li class="t">Rever os 5 leads em "prospecção" sem comentário: ou não foram abordados ainda (precisam de ação) ou o registro foi esquecido</li>
+    <li class="t">Corrigir o comentário do Talks English que tem erro de digitação que inverte o sentido da frase</li>
+    <li class="t">HC School BH: antes de enviar qualquer material, Winnie deve retornar para qualificar. Proposta sem diagnóstico vai ser ignorada</li>
+    <li class="t">Criar o hábito de registrar ao menos uma linha de "tom e receptividade" em cada lead ativo — o registro da Spa Renovo é o modelo a seguir</li>
+  </ul>
+</div>
+
+<div class="footer">
+  Gerado em 22/05/2026 &nbsp;·&nbsp; Ágatha Iara Co. &nbsp;·&nbsp; Uso interno &nbsp;·&nbsp; Funil SDR
+</div>
+
+</div>
+</body>
+</html>
